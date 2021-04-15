@@ -1,0 +1,72 @@
+#Victor
+
+version: '2'
+services:
+  odoo:
+    container_name: odoo
+    image: odoo
+    depends_on:
+      - postgres
+    ports:
+      - "8069:8069"
+    environment:
+    - HOST=postgres
+    - USER=toto
+    - PASSWORD=toto
+    networks:
+      - odoo
+  postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=toto
+      - POSTGRES_USER=toto
+    networks:
+      - odoo
+networks:
+  odoo:
+
+volumes:
+  pgdata:
+    name: pgdata
+
+################################################################
+
+#Antoine
+
+version: '2'
+services:
+  odoo:
+    image: odoo
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    environment:
+      - USER=toto
+      - PASSWORD=toto
+    networks:
+      - odoo-network
+  db:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=toto
+      - POSTGRES_USER=toto
+    networks:
+      - odoo-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  odoo-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+
+###
+

@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+    docker-supermario:
+        ports:
+            - '8600:8080'
+        image: pengbai/docker-supermario
